@@ -3,401 +3,199 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Math Drill Bot</title>
+  <title>💖 DE Drill — Cute Mode</title>
+  <!-- Pretty math -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]]},svg:{fontCache:'global'}};</script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
   <style>
-    :root {
-      --bg: #0b1020; --panel:#121a33; --ink:#e7ecff; --muted:#a9b7ff99; --accent:#7c9cff; --good:#6be675; --bad:#ff6b88; --warn:#ffd166;
+    :root{
+      --bg:#fff6fb; --panel:#ffffff; --ink:#3a2a35; --muted:#8e6a82; --accent:#ff6fb5; --accent2:#ffc3e7; --line:#f6d7eb; --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444;
     }
     html,body{height:100%}
-    body{margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; background:radial-gradient(1200px 800px at 20% -10%,#1a2250 0,#0b1020 50%); color:var(--ink)}
-    .wrap{max-width:1000px;margin:0 auto; padding:24px}
-    header{display:flex; gap:16px; align-items:center; justify-content:space-between; margin-bottom:16px}
-    .title{font-size:clamp(22px,3vw,32px); font-weight:800; letter-spacing:0.3px}
-    .sub{color:var(--muted); font-size:14px}
-    .card{background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02)); border:1px solid rgba(255,255,255,0.08); border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,0.25); padding:16px}
-    .row{display:flex; flex-wrap:wrap; gap:12px; align-items:center}
-    select, input[type="number"], button, input[type="text"], textarea { background:#0f1836; color:var(--ink); border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:10px 12px; font-size:14px; outline:none }
-    button{cursor:pointer; transition:transform .05s ease; font-weight:700}
-    button:active{transform:scale(0.98)}
-    .pill{display:inline-flex; align-items:center; gap:8px; border-radius:999px; padding:6px 10px; background:#0f1836; border:1px solid rgba(255,255,255,0.1); font-size:12px}
-    .grid{display:grid; grid-template-columns:1fr; gap:16px}
-    .tabbtn{background:#0f1836; border:1px solid rgba(255,255,255,0.15); border-radius:999px; padding:8px 12px}
-    .tabbtn.active{outline:2px solid var(--accent)}
-    @media (min-width: 900px){ .grid{ grid-template-columns: 1.2fr 1fr } }
-    .prompt{font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size:18px; line-height:1.5}
-    .small{font-size:12px; color:var(--muted)}
-    .ok{color:var(--good)} .bad{color:var(--bad)} .warn{color:var(--warn)}
-    .kbd{background:#09102b; border:1px solid rgba(255,255,255,0.12); padding:2px 6px; border-radius:6px; font-family:inherit; font-size:12px}
-    .hint{border-left:3px solid var(--accent); padding-left:10px}
-    details summary{cursor:pointer; list-style:none}
-    details summary::-webkit-details-marker{display:none}
-    .score{display:flex; gap:10px; align-items:center}
-    .score .n{font-weight:800; font-size:18px}
-    .ghost{opacity:.7}
-    .footer{margin-top:20px; color:var(--muted); font-size:12px}
-    .tag{padding:2px 6px; border-radius:6px; background:#0f1836; border:1px solid rgba(255,255,255,0.1)}
-    .hl{color:var(--accent)}
+    body{margin:0; background:radial-gradient(1200px 800px at 20% -10%, #ffe5f3 0, var(--bg) 55%); color:var(--ink); font-family: 'KaTeX_Main', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
+    .app{display:grid; grid-template-columns:260px 1fr; min-height:100vh}
+    header.top{grid-column:1 / -1; background:linear-gradient(180deg,#fff, #ffe9f6); border-bottom:1px solid var(--line); padding:12px 18px; display:flex; align-items:center; justify-content:space-between}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:900}
+    .brand .spark{filter:drop-shadow(0 2px 4px rgba(255,111,181,.4))}
+    .topstats{display:flex; align-items:center; gap:16px}
+    .meter{display:flex; align-items:center; gap:10px}
+    .ring{width:46px; height:46px; border-radius:50%; background:conic-gradient(var(--accent) 0deg, var(--line) 0deg); display:grid; place-items:center; border:2px solid #ffe3f2; color:#db2e89; font-weight:800}
+
+    aside.sidebar{border-right:1px solid var(--line); background:#fff;}
+    .sidewrap{padding:16px}
+    .slabel{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin:4px 0 8px}
+    .skill{display:flex; align-items:center; justify-content:space-between; gap:10px; background:var(--panel); border:2px dashed var(--line); border-radius:14px; padding:10px 12px; margin-bottom:10px; cursor:pointer}
+    .skill:hover{border-color:#ffc7e8}
+    .skill.active{border-style:solid; border-color:#ffb3df; background:linear-gradient(180deg,#fff,#fff4fb)}
+    .pill{font-size:12px; color:#cf5aa3; background:#fff0fa; border:1px solid #ffd4eb; border-radius:999px; padding:2px 8px}
+
+    main.content{padding:20px; display:flex; justify-content:center}
+    .card{max-width:940px; flex:1; background:var(--panel); border:1px solid var(--line); border-radius:22px; box-shadow:0 16px 38px rgba(255,111,181,.12); padding:18px}
+    .prompt{font-size:19px; line-height:1.6}
+    .controls{display:flex; flex-wrap:wrap; gap:10px; margin-top:12px}
+
+    input[type="text"], textarea{flex:1; min-width:320px; background:#fff9fd; border:2px solid #ffd4eb; border-radius:14px; padding:12px 14px; font-size:16px; color:var(--ink); box-shadow:inset 0 1px 0 #fff}
+    input[type="text"]::placeholder{color:#caa6bd}
+    button{border-radius:12px; border:1px solid var(--line); padding:10px 14px; cursor:pointer; font-weight:800}
+    button.primary{background:var(--accent); color:white; border-color:transparent; box-shadow:0 6px 14px rgba(255,111,181,.35)}
+    button.ghost{background:#fff0fa; color:#b64f8f}
+
+    .feedback{margin-top:10px; font-size:15px}
+    .ok{color:var(--ok)} .bad{color:var(--bad)} .warn{color:var(--warn)}
+
+    details{margin-top:10px}
+    summary{cursor:pointer; color:#d43f94}
+
+    .footerbar{margin-top:14px; display:flex; align-items:center; justify-content:space-between; gap:16px}
+    .progress{flex:1; height:12px; background:#ffe8f4; border-radius:999px; overflow:hidden; border:1px solid #ffd4eb}
+    .progress > div{height:100%; width:0%; background:linear-gradient(90deg, #ff8fc9, #ffd1ec)}
+    .stats{display:flex; gap:14px; color:var(--muted); font-size:13px}
+
+    .kbd{background:#fff0fa; border:1px solid #ffd4eb; padding:2px 6px; border-radius:6px; font-size:12px}
+    .emoji{filter:drop-shadow(0 1px 0 rgba(255,111,181,.35))}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div>
-        <div class="title">🧠 Math Drill Bot</div>
-        <div class="sub">Practice integrals with instant feedback, hints, and streaks. Host this single file on GitHub Pages.</div>
-        <div class="row" style="margin-top:8px; gap:8px">
-          <button id="modePractice" class="tabbtn">Practice</button>
-          <button id="modeLessons" class="tabbtn ghost">Lessons</button>
-        </div>
-      </div>
-      <div class="pill score" id="scoreBar">
-        <span>⭐ Score:</span><span class="n" id="score">0</span>
-        <span class="ghost">|</span>
-        <span>🔥 Streak:</span><span class="n" id="streak">0</span>
+  <div class="app">
+    <header class="top">
+      <div class="brand"><span class="spark">✨</span><span>DE Drill • Cute</span><span class="spark">✨</span></div>
+      <div class="topstats">
+        <div>⭐ Score: <b id="score">0</b></div>
+        <div>🔥 Streak: <b id="streak">0</b></div>
+        <div class="meter"><div class="ring" id="ring"><span id="mastery">0</span></div><div style="font-weight:700;color:#c14290">Mastery</div></div>
       </div>
     </header>
 
-    <div id="practiceWrap" class="card grid">
-      <div>
-        <div class="row" style="margin-bottom:8px">
-          <label>Topic
-            <select id="topic">
-              <option value="ulogTrig">u-sub: trig(log x)</option>
-              <option value="eatbxTrig">e^{ax} · trig(bx)</option>
-              <option value="poly">Power rule</option>
-              <option value="linear">u-sub: (ax+b)^m</option>
-              <option value="ibp1">IBP: x·e^{ax}</option>
-              <option value="ibp2">IBP: x·sin(bx)</option>
-            </select>
-          </label>
-          <label>Difficulty
-            <select id="difficulty">
-              <option value="easy">Easy</option>
-              <option value="med">Medium</option>
-              <option value="hard">Hard</option>
-            </select>
-          </label>
-          <button id="newQ">New Problem ➕</button>
-        </div>
-
-        <div class="prompt" id="problem">Click <span class="kbd">New Problem</span> to start.</div>
-
-        <div class="row" style="margin-top:10px">
-          <input id="answer" type="text" placeholder="Type an antiderivative F(x) (you can omit +C). Use sin, cos, tan, log, exp. Use ^ for powers." style="flex:1"/>
-          <button id="check">Check ✅</button>
-          <button id="hintBtn">Hint 💡</button>
-          <button id="solutionBtn">Show Solution 🧩</button>
-        </div>
-
-        <div id="feedback" class="small" style="margin-top:8px"></div>
-
-        <details id="hintBox" style="margin-top:10px">
-          <summary class="hl">Hint</summary>
-          <div class="hint" id="hintContent"></div>
-        </details>
-
-        <details id="solnBox" style="margin-top:10px">
-          <summary class="hl">Solution (expand after trying!)</summary>
-          <div id="solutionContent"></div>
-        </details>
-
+    <aside class="sidebar">
+      <div class="sidewrap">
+        <div class="slabel">Skills</div>
+        <div class="skill" data-topic="sep"><div class="name">Separable ODEs ✨</div><div class="pill">solve y(t)</div></div>
+        <div class="skill" data-topic="lin"><div class="name">Linear ODEs (IF) 🌸</div><div class="pill">solve y(x)</div></div>
+        <div class="skill" data-topic="growth"><div class="name">Growth/Decay 🌱</div><div class="pill">applications</div></div>
+        <div class="skill" data-topic="cooling"><div class="name">Newton Cooling 🧊</div><div class="pill">applications</div></div>
+        <div class="skill" data-topic="concept"><div class="name">Existence & Uniqueness 💡</div><div class="pill">concept quiz</div></div>
       </div>
+    </aside>
 
+    <main class="content">
       <div class="card">
-        <div style="font-weight:700; margin-bottom:6px">How answers are checked</div>
-        <div class="small">
-          We numerically differentiate your answer <span class="tag">F(x)</span> and compare it to the target integrand <span class="tag">f(x)</span> at several random points.
-          If <span class="tag">F'(x) ≈ f(x)</span> within tolerance, it counts as correct. You can write <span class="tag">^</span> for powers and <span class="tag">log</span> for natural log.
-          Constants like <span class="tag">pi</span> and <span class="tag">e</span> are understood. Domain matters (e.g., <span class="tag">log x</span> requires <span class="tag">x&gt;0</span>).
+        <div class="prompt" id="prompt">Pick a skill on the left, then press <span class="kbd">New Q</span>. I’ll make it pretty 🌷</div>
+        <div class="controls">
+          <input id="answer" type="text" placeholder="Type y(t) or y(x), or select an option below…" />
+          <button id="newQ" class="ghost">New Q</button>
+          <button id="check" class="primary">Check ✅</button>
+          <button id="hintBtn" class="ghost">Hint 💡</button>
+          <button id="solnBtn" class="ghost">Solution 🧩</button>
         </div>
-        <div style="margin-top:10px">
-          <div class="small">Input helpers:</div>
-          <div class="small">
-            <span class="kbd">sin(x)</span>, <span class="kbd">cos(x)</span>, <span class="kbd">tan(x)</span>, <span class="kbd">log(x)</span>, <span class="kbd">exp(x)</span>, <span class="kbd">sqrt(x)</span>, <span class="kbd">pi</span>, <span class="kbd">e</span>
+        <div id="mcq" style="margin-top:8px; display:none"></div>
+        <div id="feedback" class="feedback"></div>
+        <details id="hintBox"><summary>Hint</summary><div id="hint"></div></details>
+        <details id="solnBox"><summary>Solution</summary><div id="solution"></div></details>
+
+        <div class="footerbar">
+          <div class="progress"><div id="progInner"></div></div>
+          <div class="stats">
+            <div>Correct: <b id="correctToday">0</b></div>
+            <div>Attempts: <b id="attemptsToday">0</b></div>
+            <div>Acc: <b id="accToday">0%</b></div>
           </div>
         </div>
-        <hr style="border-color:rgba(255,255,255,0.08); margin:14px 0"/>
-        <div style="font-weight:700; margin-bottom:6px">Progress</div>
-        <div class="row small">
-          <div>Correct today: <span id="correctToday">0</span></div>
-          <div>Attempts today: <span id="attemptsToday">0</span></div>
-          <div>Accuracy: <span id="accToday">0%</span></div>
-        </div>
-        <div class="footer">Tip: Press <span class="kbd">Enter</span> to check. Press <span class="kbd">N</span> for new problem.</div>
       </div>
-    </div>
+    </main>
   </div>
 
-    <!-- Lessons Section -->
-    <div id=\"lessonsWrap\" class=\"card\" style=\"display:none\">
-      <div style=\"font-weight:800; font-size:18px; margin-bottom:8px\">📚 Lessons</div>
-      ... existing lessons ...
-
-      <details>
-        <summary class=\"hl\">Lesson 4: First-order ODEs & Applications</summary>
-        <div class=\"hint\" style=\"margin-top:8px\">
-          <p><b>Separable ODEs:</b> Rearrange dy/dx = f(x)g(y) to (1/g(y)) dy = f(x) dx, then integrate both sides.</p>
-          <p><b>Linear ODEs:</b> dy/dx + P(x)y = Q(x). Use the integrating factor μ(x)=e^{∫P(x) dx}.</p>
-          <p><b>Physical applications:</b></p>
-          <ul>
-            <li>Exponential growth/decay: dy/dt = ky ⇒ y=Ce^{kt}.</li>
-            <li>Newton cooling: dT/dt = -k(T - T_env).</li>
-            <li>RC circuit: dQ/dt + (1/RC)Q = E/R.</li>
-          </ul>
-        </div>
-      </details>
-
-      <div class=\"small\" style=\"margin-top:12px\">Tip: Use the <b>Practice</b> tab to generate problems that match each lesson, including ODEs now!</div>
-    </div>
-
   <script>
-  // === Utility: persistence ===
-  const storageKey = 'math-drill-progress-v1';
-  const todayKey = () => new Date().toISOString().slice(0,10);
-  const loadState = () => JSON.parse(localStorage.getItem(storageKey) || '{}');
-  const saveState = s => localStorage.setItem(storageKey, JSON.stringify(s));
+  // 🎀 persistence
+  const SKEY='de-cute-v1';
+  const today=()=>new Date().toISOString().slice(0,10);
+  const load=()=>JSON.parse(localStorage.getItem(SKEY)||'{}');
+  const save=s=>localStorage.setItem(SKEY, JSON.stringify(s));
+  function state(){const s=load(); const d=today(); s[d]=s[d]||{attempts:0,correct:0,score:0,streak:0,mastery:0}; return s}
+  function put(ns){save(ns); renderProgress()}
+  function bump(ok){const ns=state(); const d=today(); const t=ns[d]; t.attempts++; if(ok){t.correct++; t.score+=10; t.streak++; t.mastery=Math.min(100, t.mastery + (t.streak>=3?10:7)); confetti();} else {t.streak=0; t.mastery=Math.max(0, t.mastery-3)}; put(ns)}
+  function renderProgress(){const s=state(); const d=today(); const t=s[d]; byId('score').textContent=t.score; byId('streak').textContent=t.streak; byId('correctToday').textContent=t.correct; byId('attemptsToday').textContent=t.attempts; byId('accToday').textContent=t.attempts? Math.round(100*t.correct/t.attempts)+'%':'0%'; byId('mastery').textContent=t.mastery; byId('ring').style.background=`conic-gradient(var(--accent) ${t.mastery*3.6}deg, var(--line) ${t.mastery*3.6}deg)`; byId('progInner').style.width=t.mastery+'%'; }
 
-  function bumpProgress(ok){
-    const s = loadState();
-    const d = todayKey();
-    s[d] = s[d] || {attempts:0, correct:0, score:0, streak:0};
-    s[d].attempts++;
-    if(ok){ s[d].correct++; s[d].score+=10; s[d].streak++ } else { s[d].streak=0 }
-    saveState(s);
-    renderProgress();
-  }
-  function renderProgress(){
-    const s = loadState(); const d = todayKey(); const t = s[d] || {attempts:0, correct:0, score:0, streak:0};
-    byId('score').textContent = t.score;
-    byId('streak').textContent = t.streak;
-    byId('correctToday').textContent = t.correct;
-    byId('attemptsToday').textContent = t.attempts;
-    byId('accToday').textContent = t.attempts? Math.round(100*t.correct/t.attempts)+"%" : '0%';
-  }
+  // ✨ helpers
+  const byId=id=>document.getElementById(id);
+  const choice=a=>a[Math.floor(Math.random()*a.length)];
+  const rand=(a,b)=>Math.random()*(b-a)+a; const randint=(a,b)=>Math.floor(rand(a,b+1));
+  function latex(){ if(window.MathJax && MathJax.typeset) MathJax.typeset(); }
+  function sanitize(expr){ if(!expr) return ''; expr=expr.replace(/\s+/g,''); expr=expr.replace(/\^/g,'**'); expr=expr.replace(/pi/gi,'Math.PI'); expr=expr.replace(/e(?![a-zA-Z0-9_])/g,'Math.E'); expr=expr.replace(/sin\(/gi,'Math.sin(').replace(/cos\(/gi,'Math.cos(').replace(/tan\(/gi,'Math.tan(').replace(/log\(/gi,'Math.log(').replace(/exp\(/gi,'Math.exp(').replace(/sqrt\(/gi,'Math.sqrt('); return expr }
+  function compileScalar(expr, vars){const s=sanitize(expr); try{return new Function(...vars, `return (${s});`)}catch(e){return null}}
+  function numDeriv(f,t){const h=1e-5*(1+Math.abs(t)); return (f(t+h)-f(t-h))/(2*h)}
+  function relClose(a,b){const tol=1e-2 + 1e-3*Math.abs(b); return Math.abs(a-b)<=tol}
 
-  // === Problem generation ===
-  const rand = (a,b)=>Math.random()*(b-a)+a;
-  const randint = (a,b)=>Math.floor(rand(a,b+1));
-  const choice = arr => arr[Math.floor(Math.random()*arr.length)];
+  // 🎈 confetti (emoji sparkles)
+  function confetti(){ const el=document.createElement('div'); el.style.position='fixed'; el.style.left='50%'; el.style.top='18px'; el.style.transform='translateX(-50%)'; el.style.fontSize='24px'; el.textContent='✨🌸💖✨'; el.style.transition='all .9s ease'; el.style.opacity='1'; document.body.appendChild(el); requestAnimationFrame(()=>{ el.style.top='-40px'; el.style.opacity='0'; }); setTimeout(()=> el.remove(), 1000); }
 
-  function fmtPow(base, n){
-    if(n===1) return base;
-    if(n===2) return base+"^2";
-    return base+"^"+n;
-  }
+  // 🧪 generators
+  // Separable: dy/dt = a t^m * (y-b)
+  function gen_sep(){ const a=choice([1,2,3]) * choice([1,-1]); const m=choice([0,1,2]); const b=choice([-2,-1,0,1,2]); const t0=0; const y0=choice([-2,-1,1,2]); const prompt=`Solve the separable ODE $$\frac{dy}{dt} = ${a}\,t^{${m}}\,(y-${b})\quad\text{with}\quad y(${t0})=${y0}.$$ Enter a function of <code>t</code> for $y(t)$.`; const hint=`Let $u=y-${b}$. Then $\dfrac{du}{dt} = ${a}\,t^{${m}} u$. Solve $u'=(${a})t^{${m}}u$ → $u=C\,\exp\!\left(\dfrac{${a}}{${m+1}}t^{${m+1}}\right)$, then use $y(${t0})=${y0}$.`; const C = (y0-b); const sol = t=> b + C*Math.exp( (a/(m+1))*Math.pow(t, m+1) ); const solutionHTML = `$$y(t) = ${b} + (${y0-${b}})\exp\!\left(\dfrac{${a}}{${m+1}}t^{${m+1}}\right).$$`; return {type:'func', var:'t', ic:{t0,y0}, prompt, hint, truth:sol, solutionHTML, ode:(t,y)=> a*Math.pow(t,m)*(y-b)} }
 
-  function problem_ulogTrig(diff){
-    const n = diff==='easy' ? choice([0,1]) : diff==='med' ? choice([0,1,2]) : choice([0,1,2,3]);
-    const trig = choice(['cos','sin']);
-    const integrandLatex = `${fmtPow('x', n)}·${trig}(log x)`;
-    const a = n+1; // exponent after substitution
-    const F = trig==='cos'
-      ? (x)=> Math.pow(x,n+1)/(a*a+1) * ( a*Math.cos(Math.log(x)) + Math.sin(Math.log(x)) )
-      : (x)=> Math.pow(x,n+1)/(a*a+1) * ( a*Math.sin(Math.log(x)) - Math.cos(Math.log(x)) );
-    const f = (x)=> Math.pow(x,n) * (trig==='cos'? Math.cos(Math.log(x)): Math.sin(Math.log(x)) );
+  // Linear (integrating factor): y' + p y = q, with constants
+  function gen_lin(){ const p=choice([1,2,3]) * choice([1,-1]); const q=choice([-2,-1,1,2]); const x0=0; const y0=choice([-2,-1,0,2]); const mu = x=> Math.exp(p*x); const prompt=`Solve the linear ODE $$y' + (${p})y = ${q},\qquad y(${x0})=${y0}.$$ Enter a function of <code>x</code> for $y(x)$.`; const hint=`Integrating factor $\mu(x)=e^{\int ${p}\,dx}=e^{${p}x}$. Then $(\mu y)' = \mu\,${q}$ → $y = e^{- ${p}x}\big( \int ${q}e^{${p}x}\,dx + C\big)$. Use $y(${x0})=${y0}$.`; const sol = x=> (q/p) + (y0 - q/p)*Math.exp(-p*(x-x0)); const solutionHTML = `$$y(x)=\frac{${q}}{${p}} + \Big(${y0}-\frac{${q}}{${p}}\Big)e^{- ${p}(x-${x0})}.$$`; return {type:'func', var:'x', ic:{x0,y0}, prompt, hint, truth:sol, solutionHTML, ode:(x,y)=> -p*y + q} }
 
-    const hint = [
-      `Let u = log x (so x>0). Then dx = x du and x = e^u.`,
-      `Rewrite integrand: x^${n}·${trig}(log x) dx = e^{${n}u}·${trig}(u) · e^{u} du = e^{${n+1}u}·${trig}(u) du.`,
-      `Use the template ∫ e^{au} cos(bu) du or ∫ e^{au} sin(bu) du with a=${a}, b=1.`,
-      `Back-substitute u = log x, e^{u} = x.`
-    ].join('<br>');
+  // Growth/Decay y' = k y
+  function gen_growth(){ const k=choice([-2,-1,-0.5,0.5,1,2]); const t0=0; const y0=choice([0.5,1,2,3]); const prompt=`Solve $$\dfrac{dy}{dt} = ${k}\,y,\quad y(${t0})=${y0}.$$ Enter $y(t)$.`; const hint=`$y'=ky \Rightarrow y=Ce^{kt}$. Use $y(0)=${y0}$ to get $C=${y0}$.`; const sol = t=> y0*Math.exp(k*(t-t0)); const solutionHTML = `$$y(t)=${y0}e^{${k}(t-${t0})}.$$`; return {type:'func', var:'t', ic:{t0,y0}, prompt, hint, truth:sol, solutionHTML, ode:(t,y)=> k*y} }
 
-    const sol = trig==='cos'
-      ? `F(x) = x^${n+1}/(${a*a+1}) · ( ${a}·cos(log x) + sin(log x) ) + C`
-      : `F(x) = x^${n+1}/(${a*a+1}) · ( ${a}·sin(log x) - cos(log x) ) + C`;
+  // Newton Cooling T' = -k (T - Tenv)
+  function gen_cooling(){ const k=choice([0.3,0.5,1.0]); const Tenv=choice([20,22,25,30]); const t0=0; const T0=choice([60,70,80]); const prompt=`Newton cooling: $$\dfrac{dT}{dt} = -${k}(T-${Tenv}),\quad T(${t0})=${T0}.$$ Enter $T(t)$.`; const hint=`Linear ODE with steady state $T= ${Tenv}$. Solution $T(t)=${Tenv}+ (T_0-${Tenv})e^{-kt}$.`; const sol = t=> Tenv + (T0 - Tenv)*Math.exp(-k*(t-t0)); const solutionHTML = `$$T(t)=${Tenv} + (${T0}-${Tenv})e^{- ${k}(t-${t0})}.$$`; return {type:'func', var:'t', ic:{t0:0,y0:T0}, prompt, hint, truth:sol, solutionHTML, ode:(t,T)=> -k*(T-Tenv)} }
 
-    return { prompt:`∫ ${integrandLatex} dx`, f, F, hint, solution: sol, domain:'x>0', testXs: ()=>[0.6, 0.9, 1.3, 2.1, 2.8] };
+  // Concept MCQ (Existence & Uniqueness)
+  function gen_concept(){ const variants=[
+    {q:`For the IVP $y' = \dfrac{1}{x}$, $y(0)=0$, existence/uniqueness near $x=0$?`,
+     options:["No solution.","At least one solution, not unique.","Unique solution."], ans:0,
+     why:"$f(x,y)=1/x$ is not continuous at $x=0$ → the theorem's hypotheses fail."},
+    {q:`For $y' = 2\sqrt{|y|}$ with $y(0)=0$, what happens?`,
+     options:["Unique solution.","Infinite solutions.","No solutions."], ans:1,
+     why:"Not Lipschitz in $y$ at $y=0$ → non-uniqueness (e.g., $y\equiv 0$ and patched solutions)."},
+    {q:`For $y' = x + y$ with $y(0)=2$, do we have uniqueness near $0$?`,
+     options:["Yes, unique.","No, fails existence.","No, fails uniqueness."], ans:0,
+     why:"$f$ and $\partial f/\partial y=1$ are continuous → unique local solution."}
+  ];
+    const v=choice(variants);
+    const prompt=`<div style="display:flex; align-items:center; gap:6px"><span>💡</span><span>${v.q}</span></div>`;
+    const hint=`Check continuity in a rectangle around the initial point; if yes, the existence–uniqueness theorem applies.`;
+    const solutionHTML = `<b>Answer:</b> ${v.options[v.ans]}<br/><span class="small">${v.why}</span>`;
+    return {type:'mcq', prompt, hint, solutionHTML, options:v.options, answer:v.ans}
   }
 
-  function problem_eatbxTrig(diff){
-    const a = diff==='easy'?1: diff==='med'? randint(1,2) : randint(1,3);
-    const b = diff==='easy'?1: diff==='med'? randint(1,2) : randint(1,3);
-    const trig = choice(['cos','sin']);
-    const prompt = `∫ e^{${a}x} · ${trig}(${b}x) dx`;
-    const denom = a*a + b*b;
-    const F = trig==='cos'
-      ? (x)=> Math.exp(a*x) * ( a*Math.cos(b*x) + b*Math.sin(b*x) )/denom
-      : (x)=> Math.exp(a*x) * ( a*Math.sin(b*x) - b*Math.cos(b*x) )/denom;
-    const f = (x)=> Math.exp(a*x) * (trig==='cos'? Math.cos(b*x): Math.sin(b*x));
-    const hint = [
-      `Try integration by parts twice, or recall the standard forms:`,
-      `∫ e^{ax}cos(bx) dx = e^{ax}(a cos bx + b sin bx)/(a^2+b^2) + C`,
-      `∫ e^{ax}sin(bx) dx = e^{ax}(a sin bx - b cos bx)/(a^2+b^2) + C`
-    ].join('<br>');
-    const sol = trig==='cos'
-      ? `F(x) = e^{${a}x} ( ${a} cos ${b}x + ${b} sin ${b}x ) / (${denom}) + C`
-      : `F(x) = e^{${a}x} ( ${a} sin ${b}x - ${b} cos ${b}x ) / (${denom}) + C`;
-    return { prompt, f, F, hint, solution: sol, domain:'all', testXs: ()=>[-0.6, -0.2, 0.0, 0.4, 0.9] };
-  }
+  const generators={ sep:gen_sep, lin:gen_lin, growth:gen_growth, cooling:gen_cooling, concept:gen_concept };
 
-  function problem_poly(diff){
-    const n = diff==='easy'? randint(1,3) : diff==='med'? randint(2,5) : randint(3,7);
-    const prompt = `∫ x^${n} dx`;
-    const F = (x)=> Math.pow(x,n+1)/(n+1);
-    const f = (x)=> Math.pow(x,n);
-    const hint = `Use the power rule: ∫ x^n dx = x^{n+1}/(n+1) + C (for n ≠ -1).`;
-    const sol = `F(x) = x^${n+1}/(${n+1}) + C`;
-    return { prompt, f, F, hint, solution: sol, domain:'all', testXs: ()=>[-2, -0.5, 0.3, 1.2, 2.1] };
-  }
+  // 🌷 app state
+  let current=null; let topic='';
+  function setTopic(t){ topic=t; document.querySelectorAll('.skill').forEach(el=>{ el.classList.toggle('active', el.dataset.topic===t); }); byId('feedback').textContent=''; byId('answer').value=''; byId('prompt').innerHTML='Press <span class="kbd">New Q</span> when ready 💖'; byId('mcq').style.display='none'; latex(); }
 
-  function problem_linear(diff){
-    const a = diff==='easy'? randint(1,3) : randint(2,5);
-    const b = randint(-3,3);
-    const m = diff==='easy'? randint(1,2) : diff==='med'? randint(2,4) : randint(3,6);
-    const prompt = `∫ ( ${a}x ${b>=0?'+':''}${b} )^${m} dx`;
-    const F = (x)=> Math.pow(a*x + b, m+1) / (a*(m+1));
-    const f = (x)=> Math.pow(a*x + b, m);
-    const hint = `Let u = ${a}x ${b>=0?'+':''}${b}, so du = ${a} dx. Then ∫ u^m · (dx) = (1/${a}) ∫ u^m du.`;
-    const sol = `F(x) = ( ${a}x ${b>=0?'+':''}${b} )^${m+1} / (${a}·${m+1}) + C`;
-    return { prompt, f, F, hint, solution: sol, domain:'all', testXs: ()=>[-1.3, -0.2, 0.0, 0.7, 1.4] };
-  }
+  function newQ(){ if(!topic){ byId('feedback').innerHTML='<span class="warn">Pick a skill first ✨</span>'; return } current = generators[topic](); byId('prompt').innerHTML = current.prompt; byId('hint').innerHTML=current.hint; byId('solution').innerHTML = `<div style="background:#fff0fa; border:1px solid var(--line); padding:10px; border-radius:12px">${current.solutionHTML}</div>`; byId('hintBox').open=false; byId('solnBox').open=false; byId('answer').value=''; if(current.type==='mcq'){ renderMCQ(current) } else { byId('mcq').style.display='none' } latex(); }
 
-  function problem_ibp1(diff){
-    const a = diff==='easy'?1: randint(1,3);
-    const prompt = `∫ x · e^{${a}x} dx`;
-    const F = (x)=> Math.exp(a*x)*(x/a - 1/(a*a));
-    const f = (x)=> x*Math.exp(a*x);
-    const hint = `IBP with f=x (df=dx) and dg=e^{${a}x} dx (g=e^{${a}x}/${a}).`;
-    const sol = `F(x) = (e^{${a}x}/${a})(x - 1/${a}) + C`;
-    return { prompt, f, F, hint, solution: sol, domain:'all', testXs: ()=>[-0.4, 0, 0.3, 0.8, 1.1] };
-  }
+  function renderMCQ(c){ const box=byId('mcq'); box.style.display='block'; const opts = c.options.map((o,i)=>`<label style="display:block; margin:.3rem 0;"> <input type="radio" name="mc" value="${i}"> ${o} </label>`).join(''); box.innerHTML = `<div style="padding:10px; border:2px dashed #ffd4eb; border-radius:12px; background:#fff9fd">${opts}</div>`; }
 
-  function problem_ibp2(diff){
-    const b = diff==='easy'?1: randint(1,4);
-    const prompt = `∫ x · sin(${b}x) dx`;
-    const F = (x)=> -x*Math.cos(b*x)/b + Math.sin(b*x)/(b*b);
-    const f = (x)=> x*Math.sin(b*x);
-    const hint = `IBP with f=x (df=dx) and dg=sin(${b}x) dx (g=-cos(${b}x)/${b}).`;
-    const sol = `F(x) = -x cos(${b}x)/${b} + sin(${b}x)/${b*b} + C`;
-    return { prompt, f, F, hint, solution: sol, domain:'all', testXs: ()=>[-0.7, -0.2, 0.3, 0.9, 1.4] };
-  }
+  function check(){ if(!current){ byId('feedback').innerHTML='<span class="warn">Generate a question first 🪄</span>'; return }
+    if(current.type==='mcq'){ const picked=[...document.querySelectorAll('input[name="mc"]')].find(r=>r.checked); if(!picked){ byId('feedback').innerHTML='<span class="warn">Pick an option ✨</span>'; return } const ok = Number(picked.value)===current.answer; bump(ok); byId('feedback').innerHTML = ok? '<span class="ok">✅ correct! you’re glowing ✨</span>' : '<span class="bad">❌ try again — check the theorem conditions 💡</span>'; return }
 
-  const generators = { ulogTrig: problem_ulogTrig, eatbxTrig: problem_eatbxTrig, poly: problem_poly, linear: problem_linear, ibp1: problem_ibp1, ibp2: problem_ibp2 };
-
-  // === Parsing and checking ===
-  function sanitize(expr){
-    if(!expr) return '';
-    expr = expr.replace(/\s+/g,'');
-    expr = expr.replace(/\+C$/i,'');
-    expr = expr.replace(/\^/g,'**'); // power
-    expr = expr.replace(/pi/gi,'Math.PI');
-    // replace e^... with Math.E**...
-    expr = expr.replace(/(^|[^a-zA-Z0-9_])e\*\*/g, '$1Math.E**');
-    // functions
-    expr = expr.replace(/sin\(/gi,'Math.sin(')
-               .replace(/cos\(/gi,'Math.cos(')
-               .replace(/tan\(/gi,'Math.tan(')
-               .replace(/log\(/gi,'Math.log(')
-               .replace(/exp\(/gi,'Math.exp(')
-               .replace(/sqrt\(/gi,'Math.sqrt(');
-    return expr;
-  }
-
-  function compile(expr){
-    const sanitized = sanitize(expr);
-    try {
-      // Allow only x, Math.*; no other identifiers
-      if(/[^\w\.\*\+\-\/\(\)\,\^\s]/.test(sanitized.replace(/Math\.[a-zA-Z]+/g,''))){
-        // This heuristic keeps things simple; we already sanitized common tokens
-      }
-      return new Function('x', `return (${sanitized});`);
-    } catch(e){ return null }
-  }
-
-  function numDeriv(f, x){
-    const h = 1e-4*(1+Math.abs(x));
-    try { return (f(x+h)-f(x-h))/(2*h) } catch(e){ return NaN }
-  }
-
-  function relClose(a,b){
-    const A = Math.abs(a), B = Math.abs(b);
-    const tol = 1e-2 + 1e-2*B; // absolute + relative
-    return Math.abs(a-b) <= tol;
-  }
-
-  // === App state ===
-  let current = null;
-
-  function byId(id){ return document.getElementById(id) }
-  function setHTML(id, html){ byId(id).innerHTML = html }
-
-  function newProblem(){
-    byId('feedback').textContent = '';
-    byId('answer').value = '';
-    byId('hintBox').open = false; byId('solnBox').open = false;
-    const topic = byId('topic').value;
-    const diff = byId('difficulty').value;
-    const gen = generators[topic];
-    current = gen(diff);
-    setHTML('problem', current.prompt);
-    setHTML('hintContent', current.hint + (current.domain? `<div class="small" style="margin-top:6px">Domain note: <b>${current.domain}</b></div>`: ''));
-    setHTML('solutionContent', `<div class="hint">${current.solution}</div>`);
-  }
-
-  function checkAnswer(){
-    if(!current){ return }
-    const user = byId('answer').value;
-    const Fuser = compile(user);
-    if(!Fuser){ setHTML('feedback', `<span class='bad'>⚠️ Couldn't parse that. Try simpler syntax (use sin, cos, log, exp, ^).</span>`); bumpProgress(false); return }
-
-    const xs = current.testXs();
-    let ok = true; let samples=0; let worst=0;
-    for(const x of xs){
-      if(current.domain==='x>0' && x<=0){ continue }
-      const dF = numDeriv(Fuser, x);
-      const fx = current.f(x);
-      if(!isFinite(dF) || !isFinite(fx)) { ok=false; break }
-      const diff = Math.abs(dF - fx);
-      worst = Math.max(worst, diff);
-      if(!relClose(dF, fx)) { ok=false; }
-      samples++;
+    // function answers: verify ODE residual and IC
+    const variable = current.var; const raw=byId('answer').value.trim(); const f=compileScalar(raw,[variable]); if(!f){ bump(false); return byId('feedback').innerHTML='<span class="bad">⚠️ I couldn’t parse your function. Use the variable '+variable+' and basic math like exp(), sin(), ^.</span>' }
+    // test points
+    const ts = [0, 0.4, 0.9, 1.3];
+    let okAll=true, worst=0; for(const t of ts){ let y, dy; try{ y=f(t); dy=numDeriv(tt=>f(tt), t) }catch(e){ okAll=false; break } const rhs = current.ode(t,y); const resid = dy - rhs; worst=Math.max(worst, Math.abs(resid)); if(!isFinite(resid)) { okAll=false; break } }
+    // IC check if present
+    let okIC=true; if(current.ic){ const key=Object.keys(current.ic)[0]; const val=current.ic[key]; let y0; try{ y0=f(val) }catch(e){ y0=NaN } const target = current.ic.y0; if(target!==undefined){ okIC = Math.abs(y0-target) <= 1e-2*(1+Math.abs(target)); }
     }
-    if(samples===0){ ok=false }
-
-    bumpProgress(ok);
-    if(ok){
-      setHTML('feedback', `<span class='ok'>✅ Nice! Your derivative matched the integrand (max error ~ ${worst.toExponential(2)}). Keep the streak going 🔥</span>`);
-    } else {
-      setHTML('feedback', `<span class='warn'>🤔 Not quite. Expand <b>Hint</b> or <b>Solution</b> for guidance, then try again. You got this!</span>`);
-    }
+    const ok = okAll && okIC && worst < 1e-2*(1+1);
+    bump(ok);
+    byId('feedback').innerHTML = ok? `<span class='ok'>✅ slay!! your solution satisfies the ODE & IC (max residual ~ ${worst.toExponential(2)}) 🌸</span>` : `<span class='bad'>❌ not quite — check your constants/IF. Residual ~ ${worst.toExponential(2)}. peek the hint 💡</span>`;
   }
 
-  // === Events ===
-  byId('newQ').addEventListener('click', newProblem);
-  byId('check').addEventListener('click', checkAnswer);
-  byId('hintBtn').addEventListener('click', ()=> byId('hintBox').open = true);
-  byId('solutionBtn').addEventListener('click', ()=> byId('solnBox').open = true);
-  byId('answer').addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ checkAnswer() } });
-  window.addEventListener('keydown', (e)=>{ if(e.key.toLowerCase()==='n'){ newProblem() } });
+  // 🌸 wire UI
+  document.querySelectorAll('.skill').forEach(el=> el.addEventListener('click', ()=> setTopic(el.dataset.topic)) );
+  byId('newQ').addEventListener('click', newQ);
+  byId('check').addEventListener('click', check);
+  byId('hintBtn').addEventListener('click', ()=> byId('hintBox').open=true);
+  byId('solnBtn').addEventListener('click', ()=> byId('solnBox').open=true);
+  byId('answer').addEventListener('keydown', (e)=>{ if(e.key==='Enter') check() });
 
-  renderProgress();
-  // === Modes: Practice vs Lessons ===
-  function setMode(mode){
-    const pBtn = document.getElementById('modePractice');
-    const lBtn = document.getElementById('modeLessons');
-    const p = document.getElementById('practiceWrap');
-    const l = document.getElementById('lessonsWrap');
-    if(mode==='lessons'){
-      if(p) p.style.display='none'; if(l) l.style.display='block';
-      if(lBtn){ lBtn.classList.add('active'); lBtn.classList.remove('ghost'); }
-      if(pBtn){ pBtn.classList.remove('active'); pBtn.classList.add('ghost'); }
-      localStorage.setItem('md-mode','lessons');
-    } else {
-      if(p) p.style.display='grid'; if(l) l.style.display='none';
-      if(pBtn){ pBtn.classList.add('active'); pBtn.classList.remove('ghost'); }
-      if(lBtn){ lBtn.classList.remove('active'); lBtn.classList.add('ghost'); }
-      localStorage.setItem('md-mode','practice');
-    }
-  }
-  const _initMode = localStorage.getItem('md-mode') || 'practice';
-  window.addEventListener('DOMContentLoaded', ()=>{
-    const pBtn = document.getElementById('modePractice');
-    const lBtn = document.getElementById('modeLessons');
-    if(pBtn) pBtn.addEventListener('click', ()=> setMode('practice'));
-    if(lBtn) lBtn.addEventListener('click', ()=> setMode('lessons'));
-    setMode(_initMode);
-  });
+  renderProgress(); latex();
   </script>
 </body>
 </html>
