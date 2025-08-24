@@ -4,59 +4,38 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>💖 DE Drill — Cute Mode</title>
-  <!-- Pretty math -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-  <script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]]},svg:{fontCache:'global'}};</script>
+  <!-- Math rendering -->
+  <script>window.MathJax={tex:{inlineMath:[["\\(","\\)"],["$","$"]]},svg:{fontCache:'global'}};</script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
   <style>
-    :root{
-      --bg:#fff6fb; --panel:#ffffff; --ink:#3a2a35; --muted:#8e6a82; --accent:#ff6fb5; --accent2:#ffc3e7; --line:#f6d7eb; --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444;
-    }
-    body{margin:0; background:radial-gradient(1200px 800px at 20% -10%, #ffe5f3 0, var(--bg) 55%); color:var(--ink); font-family: 'KaTeX_Main', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; min-height:100vh}
-    .app{display:grid; grid-template-columns:260px 1fr; min-height:100vh}
-    header.top{grid-column:1 / -1; background:linear-gradient(180deg,#fff, #ffe9f6); border-bottom:1px solid var(--line); padding:12px 18px; display:flex; align-items:center; justify-content:space-between}
-    .brand{display:flex; align-items:center; gap:10px; font-weight:900}
-    .brand .spark{filter:drop-shadow(0 2px 4px rgba(255,111,181,.4))}
-    .topstats{display:flex; align-items:center; gap:16px}
-    .ring{width:46px; height:46px; border-radius:50%; background:conic-gradient(var(--accent) 0deg, var(--line) 0deg); display:grid; place-items:center; border:2px solid #ffe3f2; color:#db2e89; font-weight:800}
-
-    aside.sidebar{border-right:1px solid var(--line); background:#fff;}
+    :root{--bg:#fff6fb;--panel:#ffffff;--ink:#3a2a35;--muted:#8e6a82;--accent:#ff6fb5;--line:#f6d7eb;--ok:#22c55e;--bad:#ef4444}
+    body{margin:0;background:radial-gradient(1200px 800px at 20% -10%,#ffe5f3 0,var(--bg) 55%);color:var(--ink);font-family:ui-sans-serif,system-ui;min-height:100vh}
+    .app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+    header.top{grid-column:1/-1;background:linear-gradient(180deg,#fff,#ffe9f6);border-bottom:1px solid var(--line);padding:12px 18px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:900}
+    .topstats{display:flex;align-items:center;gap:16px}
+    .ring{width:46px;height:46px;border-radius:50%;background:conic-gradient(var(--accent) 0deg,var(--line) 0deg);display:grid;place-items:center;border:2px solid #ffe3f2;color:#db2e89;font-weight:800}
+    aside{border-right:1px solid var(--line);background:#fff}
     .sidewrap{padding:16px}
-    .slabel{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin:4px 0 8px}
-    .skill{display:flex; align-items:center; justify-content:space-between; gap:10px; background:var(--panel); border:2px dashed var(--line); border-radius:14px; padding:10px 12px; margin-bottom:10px; cursor:pointer; user-select:none}
-    .skill:hover{border-color:#ffc7e8}
-    .skill.active{border-style:solid; border-color:#ffb3df; background:linear-gradient(180deg,#fff,#fff4fb)}
-    .pill{font-size:12px; color:#cf5aa3; background:#fff0fa; border:1px solid #ffd4eb; border-radius:999px; padding:2px 8px}
-
-    main.content{padding:20px; display:flex; justify-content:center}
-    .card{max-width:940px; flex:1; background:var(--panel); border:1px solid var(--line); border-radius:22px; box-shadow:0 16px 38px rgba(255,111,181,.12); padding:18px}
-    .prompt{font-size:19px; line-height:1.6}
-    .controls{display:flex; flex-wrap:wrap; gap:10px; margin-top:12px}
-
-    input[type="text"]{flex:1; min-width:320px; background:#fff9fd; border:2px solid #ffd4eb; border-radius:14px; padding:12px 14px; font-size:16px; color:var(--ink)}
-    input[type="text"]::placeholder{color:#caa6bd}
-    button{border-radius:12px; border:1px solid var(--line); padding:10px 14px; cursor:pointer; font-weight:800}
-    button.primary{background:var(--accent); color:white; border-color:transparent; box-shadow:0 6px 14px rgba(255,111,181,.35)}
-    button.ghost{background:#fff0fa; color:#b64f8f}
-
-    .feedback{margin-top:10px; font-size:15px}
-    .ok{color:var(--ok)} .bad{color:var(--bad)} .warn{color:var(--warn)}
-
-    details{margin-top:10px}
-    summary{cursor:pointer; color:#d43f94}
-
-    .footerbar{margin-top:14px; display:flex; align-items:center; justify-content:space-between; gap:16px}
-    .progress{flex:1; height:12px; background:#ffe8f4; border-radius:999px; overflow:hidden; border:1px solid #ffd4eb}
-    .progress > div{height:100%; width:0%; background:linear-gradient(90deg, #ff8fc9, #ffd1ec)}
-    .stats{display:flex; gap:14px; color:var(--muted); font-size:13px}
-
-    .kbd{background:#fff0fa; border:1px solid #ffd4eb; padding:2px 6px; border-radius:6px; font-size:12px}
+    .slabel{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:4px 0 8px}
+    .skill{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--panel);border:2px dashed var(--line);border-radius:14px;padding:10px 12px;margin-bottom:10px;cursor:pointer;user-select:none}
+    .skill.active{border-style:solid;border-color:#ffb3df;background:linear-gradient(180deg,#fff,#fff4fb)}
+    main{padding:20px;display:flex;justify-content:center}
+    .card{max-width:940px;flex:1;background:var(--panel);border:1px solid var(--line);border-radius:22px;box-shadow:0 16px 38px rgba(255,111,181,.12);padding:18px}
+    .prompt{font-size:19px;line-height:1.6}
+    .controls{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+    input[type=text]{flex:1;min-width:320px;background:#fff9fd;border:2px solid #ffd4eb;border-radius:14px;padding:12px 14px;font-size:16px;color:var(--ink)}
+    button{border-radius:12px;padding:10px 14px;cursor:pointer;font-weight:800}
+    button.primary{background:var(--accent);color:#fff;border:none}
+    button.ghost{background:#fff0fa;color:#b64f8f;border:none}
+    .feedback{margin-top:10px;font-size:15px}
+    .ok{color:var(--ok)}.bad{color:var(--bad)}
   </style>
 </head>
 <body>
   <div class="app">
     <header class="top">
-      <div class="brand"><span class="spark">✨</span><span>DE Drill • Cute</span><span class="spark">✨</span></div>
+      <div class="brand">✨ DE Drill • Cute ✨</div>
       <div class="topstats">
         <div>⭐ Score: <b id="score">0</b></div>
         <div>🔥 Streak: <b id="streak">0</b></div>
@@ -64,7 +43,7 @@
       </div>
     </header>
 
-    <aside class="sidebar">
+    <aside>
       <div class="sidewrap">
         <div class="slabel">Skills</div>
         <div class="skill" data-topic="sep">Separable ODEs ✨</div>
@@ -75,174 +54,126 @@
       </div>
     </aside>
 
-    <main class="content">
+    <main>
       <div class="card">
-        <div class="prompt" id="prompt">Pick a skill on the left, then press <span class="kbd">New Q</span></div>
+        <div class="prompt" id="prompt">Pick a skill then press <b>New Q</b></div>
         <div class="controls">
-          <input id="answer" type="text" placeholder="Type y(t) or y(x)…" />
+          <input id="answer" type="text" placeholder="Type solution function… e.g. y0*exp(k*t)" />
           <button id="newQ" class="ghost">New Q</button>
           <button id="check" class="primary">Check ✅</button>
           <button id="hintBtn" class="ghost">Hint 💡</button>
           <button id="solnBtn" class="ghost">Solution 🧩</button>
         </div>
-        <div id="mcq" style="margin-top:8px; display:none"></div>
         <div id="feedback" class="feedback"></div>
         <details id="hintBox"><summary>Hint</summary><div id="hint"></div></details>
         <details id="solnBox"><summary>Solution</summary><div id="solution"></div></details>
-        <div class="footerbar">
-          <div class="progress"><div id="progInner"></div></div>
-          <div class="stats"><div>Correct: <b id="correctToday">0</b></div><div>Attempts: <b id="attemptsToday">0</b></div><div>Acc: <b id="accToday">0%</b></div></div>
-        </div>
       </div>
     </main>
   </div>
 
   <script>
-/* === persistence & UI helpers === */
-const SKEY='de-cute-v1';
-const today=()=>new Date().toISOString().slice(0,10);
-const load=()=>JSON.parse(localStorage.getItem(SKEY)||'{}');
-const save=s=>localStorage.setItem(SKEY, JSON.stringify(s));
-function state(){const s=load(); const d=today(); s[d]=s[d]||{attempts:0,correct:0,score:0,streak:0,mastery:0}; return s}
-function put(ns){save(ns); renderProgress()}
-function bump(ok){const ns=state(); const d=today(); const t=ns[d]; t.attempts++; if(ok){t.correct++; t.score+=10; t.streak++; t.mastery=Math.min(100, t.mastery + (t.streak>=3?10:7)); confetti();} else {t.streak=0; t.mastery=Math.max(0, t.mastery-3)}; put(ns)}
-function renderProgress(){const s=state(); const d=today(); const t=s[d];
-  byId('score').textContent=t.score; byId('streak').textContent=t.streak;
-  byId('correctToday').textContent=t.correct; byId('attemptsToday').textContent=t.attempts;
-  byId('accToday').textContent=t.attempts? Math.round(100*t.correct/t.attempts)+'%':'0%';
-  byId('mastery').textContent=t.mastery;
-  byId('ring').style.background=`conic-gradient(var(--accent) ${t.mastery*3.6}deg, var(--line) ${t.mastery*3.6}deg)`;
-  byId('progInner').style.width=t.mastery+'%';
-}
-const byId=id=>document.getElementById(id);
-const choice=a=>a[Math.floor(Math.random()*a.length)];
-const rand=(a,b)=>Math.random()*(b-a)+a;
-function latex(){ if(window.MathJax && MathJax.typeset) MathJax.typeset(); }
-function sanitize(expr){ if(!expr) return ''; expr=expr.replace(/\s+/g,'').replace(/\^/g,'**')
-  .replace(/pi/gi,'Math.PI').replace(/e(?![a-zA-Z0-9_])/g,'Math.E')
-  .replace(/sin\(/gi,'Math.sin(').replace(/cos\(/gi,'Math.cos(').replace(/tan\(/gi,'Math.tan(')
-  .replace(/log\(/gi,'Math.log(').replace(/exp\(/gi,'Math.exp(').replace(/sqrt\(/gi,'Math.sqrt(');
-  return expr }
-function compileScalar(expr, vars){const s=sanitize(expr); try{return new Function(...vars, `return (${s});`)}catch(e){return null}}
-function numDeriv(f,t){const h=1e-5*(1+Math.abs(t)); return (f(t+h)-f(t-h))/(2*h)}
-function confetti(){ const el=document.createElement('div'); el.style.position='fixed'; el.style.left='50%'; el.style.top='18px'; el.style.transform='translateX(-50%)'; el.style.fontSize='24px'; el.textContent='✨🌸💖✨'; el.style.transition='all .9s ease'; el.style.opacity='1'; document.body.appendChild(el); requestAnimationFrame(()=>{ el.style.top='-40px'; el.style.opacity='0'; }); setTimeout(()=> el.remove(), 1000); }
+  // --- tiny helpers & gamification ---
+  const byId=id=>document.getElementById(id);
+  const choice=a=>a[Math.floor(Math.random()*a.length)];
+  const SKEY='de-cute-v2', today=()=>new Date().toISOString().slice(0,10);
+  const load=()=>JSON.parse(localStorage.getItem(SKEY)||'{}');
+  const save=s=>localStorage.setItem(SKEY, JSON.stringify(s));
+  function state(){const s=load(); const d=today(); s[d]=s[d]||{attempts:0,correct:0,score:0,streak:0,mastery:0}; return s}
+  function put(ns){save(ns); const t=ns[today()]; byId('score').textContent=t.score; byId('streak').textContent=t.streak; byId('mastery').textContent=t.mastery; byId('ring').style.background=`conic-gradient(var(--accent) ${t.mastery*3.6}deg, var(--line) ${t.mastery*3.6}deg)`}
+  function bump(ok){const ns=state(); const d=today(); const t=ns[d]; t.attempts++; if(ok){t.correct++; t.score+=10; t.streak++; t.mastery=Math.min(100,t.mastery+(t.streak>=3?10:7)); confetti();} else {t.streak=0; t.mastery=Math.max(0,t.mastery-3)}; put(ns)}
+  function confetti(){const el=document.createElement('div'); el.style.position='fixed'; el.style.left='50%'; el.style.top='18px'; el.style.transform='translateX(-50%)'; el.style.fontSize='24px'; el.textContent='✨🌸💖✨'; el.style.transition='all .9s ease'; el.style.opacity='1'; document.body.appendChild(el); requestAnimationFrame(()=>{el.style.top='-40px'; el.style.opacity='0'}); setTimeout(()=>el.remove(),1000)}
+  function latex(){ if(window.MathJax && MathJax.typeset) MathJax.typeset(); }
+  function sanitize(expr){ if(!expr) return ''; return expr
+    .replace(/\\s+/g,'').replace(/\\^/g,'**')
+    .replace(/pi/gi,'Math.PI').replace(/e(?![a-zA-Z0-9_])/g,'Math.E')
+    .replace(/sin\\(/gi,'Math.sin(').replace(/cos\\(/gi,'Math.cos(').replace(/tan\\(/gi,'Math.tan(')
+    .replace(/log\\(/gi,'Math.log(').replace(/exp\\(/gi,'Math.exp(').replace(/sqrt\\(/gi,'Math.sqrt(') }
+  function compile(expr, variable){ try{return new Function(variable, `return (${sanitize(expr)})`)}catch(e){return null} }
+  function numDeriv(f,t){ const h=1e-5*(1+Math.abs(t)); return (f(t+h)-f(t-h))/(2*h) }
 
-/* === Generators (use \\( ... \\) for MathJax inline) === */
-function gen_sep(){
-  const a=choice([1,2,3]) * choice([1,-1]); const m=choice([0,1,2]); const b=choice([-2,-1,0,1,2]);
-  const t0=0; const y0=choice([-2,-1,1,2]);
-  const prompt = `Solve the separable ODE
-\\( \\dfrac{dy}{dt} = ${a}\\,t^{${m}}\\,(y-${b}) \\quad \\text{with} \\quad y(${t0})=${y0} \\).
-Enter a function of <code>t</code> for \\( y(t) \\).`;
-  const hint = `Let \\( u=y-${b} \\). Then \\( u' = ${a}\\,t^{${m}} u \\).
-Solve \\( u' = (${a}) t^{${m}} u \\) \\(\\Rightarrow\\) \\( u = C\\,\\exp\\!\\left( \\dfrac{${a}}{${m+1}} t^{${m+1}} \\right) \\), then use the IC.`;
-  const C=(y0-b);
-  const sol = t=> b + C*Math.exp((a/(m+1))*Math.pow(t,m+1));
-  const solutionHTML = `\\( y(t) = ${b} + (${y0-${b}})\\exp\\!\\left( \\dfrac{${a}}{${m+1}} t^{${m+1}} \\right) \\)`;
-  return {type:'func', var:'t', ic:{t0,y0}, prompt, hint, truth:sol, solutionHTML, ode:(t,y)=> a*Math.pow(t,m)*(y-b)};
-}
-function gen_lin(){
-  const p=choice([1,2,3]) * choice([1,-1]); const q=choice([-2,-1,1,2]); const x0=0; const y0=choice([-2,-1,0,2]);
-  const prompt = `Solve the linear ODE
-\\( y' + (${p})y = ${q}, \\qquad y(${x0})=${y0} \\). Enter \\( y(x) \\).`;
-  const hint = `IF \\( \\mu(x)=e^{\\int ${p}dx}=e^{${p}x} \\).
-Then \\( (\\mu y)' = \\mu\\,${q} \\Rightarrow y = e^{- ${p}x}( \\int ${q}e^{${p}x}dx + C ) \\). Use the IC.`;
-  const sol = x=> (q/p) + (y0 - q/p)*Math.exp(-p*(x-x0));
-  const solutionHTML = `\\( y(x)=\\dfrac{${q}}{${p}} + \\big(${y0}-\\dfrac{${q}}{${p}}\\big)e^{- ${p}(x-${x0})} \\)`;
-  return {type:'func', var:'x', ic:{x0,y0}, prompt, hint, truth:sol, solutionHTML, ode:(x,y)=> -p*y + q};
-}
-function gen_growth(){
-  const k=choice([-2,-1,-0.5,0.5,1,2]); const t0=0; const y0=choice([0.5,1,2,3]);
-  const prompt = `Solve \\( dy/dt = ${k}\\,y, \\; y(${t0})=${y0} \\). Enter \\( y(t) \\).`;
-  const hint = `\\( y'=ky \\Rightarrow y=Ce^{kt} \\). With \\( y(0)=${y0} \\), \\( C=${y0} \\).`;
-  const sol = t=> y0*Math.exp(k*(t-t0));
-  const solutionHTML = `\\( y(t) = ${y0} e^{${k}(t-${t0})} \\)`;
-  return {type:'func', var:'t', ic:{t0,y0}, prompt, hint, truth:sol, solutionHTML, ode:(t,y)=> k*y};
-}
-function gen_cooling(){
-  const k=choice([0.3,0.5,1.0]); const Tenv=choice([20,22,25,30]); const t0=0; const T0=choice([60,70,80]);
-  const prompt = `Newton cooling: \\( dT/dt = -${k}(T-${Tenv}), \\; T(${t0})=${T0} \\). Enter \\( T(t) \\).`;
-  const hint = `Steady state \\( T=${Tenv} \\). Solution \\( T(t)=${Tenv} + (T_0-${Tenv})e^{-kt} \\).`;
-  const sol = t=> Tenv + (T0 - Tenv)*Math.exp(-k*(t-t0));
-  const solutionHTML = `\\( T(t)=${Tenv} + (${T0}-${Tenv}) e^{- ${k}(t-${t0})} \\)`;
-  return {type:'func', var:'t', ic:{t0:0,y0:T0}, prompt, hint, truth:sol, solutionHTML, ode:(t,T)=> -k*(T-Tenv)};
-}
-function gen_concept(){
-  const variants=[
-    {q:`For the IVP \\( y' = 1/x \\), \\( y(0)=0 \\), existence/uniqueness near \\( x=0 \\)?`,
-     options:["No solution.","At least one solution, not unique.","Unique solution."], ans:0,
-     why:"\\( f(x,y)=1/x \\) is not continuous at \\( x=0 \\) → hypotheses fail."},
-    {q:`For \\( y' = 2\\sqrt{|y|} \\) with \\( y(0)=0 \\), what happens?`,
-     options:["Unique solution.","Infinite solutions.","No solutions."], ans:1,
-     why:"Not Lipschitz in \\( y \\) at \\( 0 \\) → non-uniqueness."},
-    {q:`For \\( y' = x + y \\) with \\( y(0)=2 \\), uniqueness near \\( 0 \\)?`,
-     options:["Yes, unique.","No, fails existence.","No, fails uniqueness."], ans:0,
-     why:"\\( f \\) and \\( \\partial f/\\partial y=1 \\) continuous → unique."}
-  ];
-  const v=choice(variants);
-  const prompt=`<div style=\"display:flex;align-items:center;gap:6px\"><span>💡</span><span>${v.q}</span></div>`;
-  const hint=`Check continuity around the initial point; if yes, the theorem applies.`;
-  const solutionHTML=`<b>Answer:</b> ${v.options[v.ans]}<br/><span class=\"small\">${v.why}</span>`;
-  return {type:'mcq', prompt, hint, solutionHTML, options:v.options, answer:v.ans};
-}
-const generators={ sep:gen_sep, lin:gen_lin, growth:gen_growth, cooling:gen_cooling, concept:gen_concept };
+  // --- Generators (plain prompts; LaTeX rendered where used) ---
+  function gen_sep(){ const a=choice([1,2,3]) * choice([1,-1]); const m=choice([0,1,2]); const b=choice([-2,-1,0,1,2]); const y0=choice([-2,-1,1,2]);
+    return { type:'func', var:'t', ic:{at:0,val:y0},
+      ode:(t,y)=> a*Math.pow(t,m)*(y-b),
+      truth:(t)=> b + (y0-b)*Math.exp((a/(m+1))*Math.pow(t,m+1)),
+      prompt:`Solve (separable): \\(\\;\\dfrac{dy}{dt} = ${a}\\,t^{${m}}(y-${b})\\;\\), with \\(y(0)=${y0}\\). Enter \\(y(t)\\).`,
+      hint:`Let \\(u=y-${b}\\). Then \\(u'=${a}t^{${m}}u\\Rightarrow u=C\\exp\\!\\big(\\tfrac{${a}}{${m+1}}t^{${m+1}}\\big)\\). Use the IC.`,
+      solution:`\\(y(t)=${b}+(${y0-${b}})\\exp\\!\\big(\\tfrac{${a}}{${m+1}}t^{${m+1}}\\big)\\)`}
+  }
+  function gen_lin(){ const p=choice([1,2,3]) * choice([1,-1]); const q=choice([-2,-1,1,2]); const y0=choice([-2,-1,0,2]);
+    return { type:'func', var:'x', ic:{at:0,val:y0},
+      ode:(x,y)=> -p*y + q,
+      truth:(x)=> (q/p) + (y0 - q/p)*Math.exp(-p*x),
+      prompt:`Solve (linear): \\(y' + (${p})y = ${q}\\), with \\(y(0)=${y0}\\). Enter \\(y(x)\\).`,
+      hint:`Integrating factor \\(\\mu=e^{${p}x}\\). Then \\((\\mu y)'=\\mu\\,${q}\\Rightarrow y=e^{- ${p}x}(\\int ${q}e^{${p}x}dx+C)\\).`,
+      solution:`\\(y(x)=\\dfrac{${q}}{${p}}+\\big(${y0}-\\dfrac{${q}}{${p}}\\big)e^{- ${p}x}\\)`}
+  }
+  function gen_growth(){ const k=choice([-2,-1,-0.5,0.5,1,2]); const y0=choice([0.5,1,2,3]);
+    return { type:'func', var:'t', ic:{at:0,val:y0},
+      ode:(t,y)=> k*y, truth:(t)=> y0*Math.exp(k*t),
+      prompt:`Solve: \\(y'=${k}y\\), with \\(y(0)=${y0}\\).`,
+      hint:`\\(y=Ce^{kt}\\) and \\(C=${y0}\\).`,
+      solution:`\\(y(t)=${y0}e^{${k}t}\\)` }
+  }
+  function gen_cooling(){ const k=choice([0.3,0.5,1.0]); const Tenv=choice([20,22,25,30]); const T0=choice([60,70,80]);
+    return { type:'func', var:'t', ic:{at:0,val:T0},
+      ode:(t,T)=> -k*(T-Tenv), truth:(t)=> Tenv + (T0 - Tenv)*Math.exp(-k*t),
+      prompt:`Newton cooling: \\(T'=-${k}(T-${Tenv})\\), with \\(T(0)=${T0}\\).`,
+      hint:`Steady state ${Tenv}. \\(T(t)=${Tenv}+(${T0}-${Tenv})e^{-kt}\\).`,
+      solution:`\\(T(t)=${Tenv}+(${T0}-${Tenv})e^{- ${k}t}\\)` }
+  }
+  function gen_concept(){ const bank=[
+      {q:`For the IVP \\(y'=1/x\\) with \\(y(0)=0\\), uniqueness near \\(x=0\\)?`, options:['No solution.','At least one, not unique.','Unique solution.'], ans:0, why:'\\(f=1/x\\) not continuous at 0.'},
+      {q:`For \\(y'=2\\sqrt{|y|}\\) with \\(y(0)=0\\), what happens?`, options:['Unique.','Infinitely many.','None.'], ans:1, why:'Not Lipschitz in \\(y\\) at 0 → non-uniqueness.'},
+      {q:`For \\(y'=x+y\\) with \\(y(0)=2\\), uniqueness near 0?`, options:['Yes.','No (existence fails).','No (uniqueness fails).'], ans:0, why:'\\(f,\\partial f/\\partial y\\) continuous.'}
+    ], v=choice(bank);
+    return { type:'mcq', prompt:`💡 ${v.q}`, hint:'Check continuity around the initial point.', solution:`<b>Answer:</b> ${v.options[v.ans]} — ${v.why}`, options:v.options, answer:v.ans }
+  }
+  const generators={sep:gen_sep, lin:gen_lin, growth:gen_growth, cooling:gen_cooling, concept:gen_concept};
 
-/* === App state + wiring === */
-let current=null; let topic='';
-function setTopic(t){
-  topic=t;
-  document.querySelectorAll('.skill').forEach(el=> el.classList.toggle('active', el.dataset.topic===t));
-  byId('feedback').textContent=''; byId('answer').value='';
-  byId('prompt').innerHTML='Press <span class=\"kbd\">New Q</span> when ready 💖';
-  byId('mcq').style.display='none'; latex();
-}
-function newQ(){
-  if(!topic){ byId('feedback').innerHTML='<span class=\"warn\">Pick a skill first ✨</span>'; return }
-  current = generators[topic]();
-  byId('prompt').innerHTML = current.prompt;
-  byId('hint').innerHTML = current.hint;
-  byId('solution').innerHTML = `<div style=\"background:#fff0fa;border:1px solid var(--line);padding:10px;border-radius:12px\">${current.solutionHTML}</div>`;
-  byId('hintBox').open=false; byId('solnBox').open=false; byId('answer').value='';
-  if(current.type==='mcq'){ renderMCQ(current) } else { byId('mcq').style.display='none' }
-  latex();
-}
-function renderMCQ(c){
-  const box=byId('mcq'); box.style.display='block';
-  const opts=c.options.map((o,i)=>`<label style=\"display:block;margin:.3rem 0;\"><input type=\"radio\" name=\"mc\" value=\"${i}\"> ${o}</label>`).join('');
-  box.innerHTML=`<div style=\"padding:10px;border:2px dashed #ffd4eb;border-radius:12px;background:#fff9fd\">${opts}</div>`;
-}
-function check(){
-  if(!current){ byId('feedback').innerHTML='<span class=\"warn\">Generate a question first 🪄</span>'; return }
-  if(current.type==='mcq'){
-    const picked=[...document.querySelectorAll('input[name=\"mc\"]')].find(r=>r.checked);
-    if(!picked){ byId('feedback').innerHTML='<span class=\"warn\">Pick an option ✨</span>'; return }
-    const ok=Number(picked.value)===current.answer; bump(ok);
-    byId('feedback').innerHTML = ok? '<span class=\"ok\">✅ correct! you’re glowing ✨</span>' : '<span class=\"bad\">❌ try again — check the theorem conditions 💡</span>';
-    return;
-  }
-  // functions: verify ODE & initial condition
-  const variable=current.var; const raw=byId('answer').value.trim(); const f=compileScalar(raw,[variable]);
-  if(!f){ bump(false); return byId('feedback').innerHTML='<span class=\"bad\">⚠️ I couldn’t parse your function. Use variable '+variable+' and exp(), sin(), ^.</span>' }
-  const ts=[0,0.4,0.9,1.3]; let okAll=true, worst=0;
-  for(const t of ts){ let y,dy; try{ y=f(t); dy=numDeriv(tt=>f(tt),t) }catch(e){ okAll=false; break }
-    const rhs=current.ode(t,y); const resid=dy-rhs; worst=Math.max(worst,Math.abs(resid)); if(!isFinite(resid)){ okAll=false; break } }
-  let okIC=true;
-  if(current.ic){
-    if(current.ic.t0!==undefined && current.ic.y0!==undefined){ let y0; try{ y0=f(current.ic.t0) }catch(e){ y0=NaN } okIC = Math.abs(y0-current.ic.y0)<=1e-2*(1+Math.abs(current.ic.y0)); }
-    if(current.ic.x0!==undefined && current.ic.y0!==undefined){ let y0; try{ y0=f(current.ic.x0) }catch(e){ y0=NaN } okIC = Math.abs(y0-current.ic.y0)<=1e-2*(1+Math.abs(current.ic.y0)); }
-  }
-  const ok = okAll && okIC && worst < 1e-2*(1+1);
-  bump(ok);
-  byId('feedback').innerHTML = ok? `<span class='ok'>✅ slay!! ODE & IC satisfied (max residual ~ ${worst.toExponential(2)}) 🌸</span>` : `<span class='bad'>❌ not quite — check constants / integrating factor. Residual ~ ${worst.toExponential(2)}.</span>`;
-}
-document.querySelectorAll('.skill').forEach(el=> el.addEventListener('click', ()=> setTopic(el.dataset.topic)) );
-byId('newQ').addEventListener('click', newQ);
-byId('check').addEventListener('click', check);
-byId('hintBtn').addEventListener('click', ()=> byId('hintBox').open=true);
-byId('solnBtn').addEventListener('click', ()=> byId('solnBox').open=true);
-byId('answer').addEventListener('keydown', (e)=>{ if(e.key==='Enter') check() });
-renderProgress(); latex();
+  // --- UI wiring ---
+  let current=null, topic='';
+  document.querySelectorAll('.skill').forEach(el=> el.addEventListener('click', ()=>{
+    topic=el.dataset.topic; document.querySelectorAll('.skill').forEach(s=>s.classList.remove('active')); el.classList.add('active');
+    byId('feedback').textContent=''; byId('answer').value=''; byId('prompt').innerHTML='Press <b>New Q</b> when ready ✨';
+  }));
+  byId('newQ').addEventListener('click', ()=>{
+    if(!topic){ byId('feedback').textContent='Pick a skill first ✨'; return }
+    current=generators[topic]();
+    byId('prompt').innerHTML=current.prompt; byId('hint').innerHTML=current.hint||''; byId('solution').innerHTML=current.solution||''; latex();
+  });
+  byId('check').addEventListener('click', ()=>{
+    if(!current){ byId('feedback').textContent='Generate a question first'; return }
+    if(current.type==='mcq'){
+      let existing=document.querySelectorAll('input[name=\"mc\"]');
+      if(existing.length===0){
+        const box=document.createElement('div'); box.style.marginTop='8px'; box.style.border='2px dashed var(--line)'; box.style.borderRadius='12px'; box.style.padding='8px'; box.style.background='#fff9fd';
+        current.options.forEach((opt,i)=>{ const label=document.createElement('label'); label.style.display='block'; label.style.margin='4px 0'; const r=document.createElement('input'); r.type='radio'; r.name='mc'; r.value=i; label.appendChild(r); label.appendChild(document.createTextNode(' '+opt)); box.appendChild(label); });
+        byId('hintBox').insertAdjacentElement('beforebegin', box);
+      } else {
+        const picked=[...existing].find(r=>r.checked);
+        if(!picked){ byId('feedback').textContent='Pick an option ✨'; return }
+        const ok = Number(picked.value)===current.answer; bump(ok);
+        byId('feedback').textContent = ok? '✅ correct! you’re glowing ✨' : '❌ try again — check the theorem conditions 💡';
+      }
+      return;
+    }
+    // function check: ODE residual + IC
+    const variable=current.var; const raw=byId('answer').value.trim();
+    const f=compile(raw, variable);
+    if(!f){ bump(false); byId('feedback').textContent='⚠️ parse error — use exp(), ^ for powers, variable '+variable; return }
+    const pts=[0,0.4,0.9,1.3]; let okAll=true, worst=0;
+    for(const t of pts){ let y, dy; try{ y=f(t); dy=(tt=>{const h=1e-5*(1+Math.abs(tt)); return (f(tt+h)-f(tt-h))/(2*h)})(t) }catch(e){ okAll=false; break }
+      const rhs=current.ode(t,y); const resid=dy-rhs; worst=Math.max(worst,Math.abs(resid)); if(!isFinite(resid)) { okAll=false; break } }
+    let okIC=true; if(current.ic){ let y0; try{ y0=f(current.ic.at) }catch(e){ y0=NaN } okIC = Math.abs(y0-current.ic.val) <= 1e-2*(1+Math.abs(current.ic.val)); }
+    const ok = okAll && okIC && worst < 1e-2*(1+1);
+    bump(ok);
+    byId('feedback').textContent = ok? `✅ ODE & IC satisfied (max residual ~ ${worst.toExponential(2)}) ✨` : `❌ not quite — residual ~ ${worst.toExponential(2)}. Check constants/IF.`;
+  });
+  byId('hintBtn').addEventListener('click', ()=> byId('hintBox').open=true);
+  byId('solnBtn').addEventListener('click', ()=> byId('solnBox').open=true);
+  byId('answer').addEventListener('keydown', (e)=>{ if(e.key==='Enter') byId('check').click() });
+  put(state()); latex();
   </script>
 </body>
 </html>
-
