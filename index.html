@@ -21,6 +21,8 @@
     button:active{transform:scale(0.98)}
     .pill{display:inline-flex; align-items:center; gap:8px; border-radius:999px; padding:6px 10px; background:#0f1836; border:1px solid rgba(255,255,255,0.1); font-size:12px}
     .grid{display:grid; grid-template-columns:1fr; gap:16px}
+    .tabbtn{background:#0f1836; border:1px solid rgba(255,255,255,0.15); border-radius:999px; padding:8px 12px}
+    .tabbtn.active{outline:2px solid var(--accent)}
     @media (min-width: 900px){ .grid{ grid-template-columns: 1.2fr 1fr } }
     .prompt{font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size:18px; line-height:1.5}
     .small{font-size:12px; color:var(--muted)}
@@ -43,6 +45,10 @@
       <div>
         <div class="title">🧠 Math Drill Bot</div>
         <div class="sub">Practice integrals with instant feedback, hints, and streaks. Host this single file on GitHub Pages.</div>
+        <div class="row" style="margin-top:8px; gap:8px">
+          <button id="modePractice" class="tabbtn">Practice</button>
+          <button id="modeLessons" class="tabbtn ghost">Lessons</button>
+        </div>
       </div>
       <div class="pill score" id="scoreBar">
         <span>⭐ Score:</span><span class="n" id="score">0</span>
@@ -51,7 +57,7 @@
       </div>
     </header>
 
-    <div class="card grid">
+    <div id="practiceWrap" class="card grid">
       <div>
         <div class="row" style="margin-bottom:8px">
           <label>Topic
@@ -121,6 +127,28 @@
       </div>
     </div>
   </div>
+
+    <!-- Lessons Section -->
+    <div id=\"lessonsWrap\" class=\"card\" style=\"display:none\">
+      <div style=\"font-weight:800; font-size:18px; margin-bottom:8px\">📚 Lessons</div>
+      ... existing lessons ...
+
+      <details>
+        <summary class=\"hl\">Lesson 4: First-order ODEs & Applications</summary>
+        <div class=\"hint\" style=\"margin-top:8px\">
+          <p><b>Separable ODEs:</b> Rearrange dy/dx = f(x)g(y) to (1/g(y)) dy = f(x) dx, then integrate both sides.</p>
+          <p><b>Linear ODEs:</b> dy/dx + P(x)y = Q(x). Use the integrating factor μ(x)=e^{∫P(x) dx}.</p>
+          <p><b>Physical applications:</b></p>
+          <ul>
+            <li>Exponential growth/decay: dy/dt = ky ⇒ y=Ce^{kt}.</li>
+            <li>Newton cooling: dT/dt = -k(T - T_env).</li>
+            <li>RC circuit: dQ/dt + (1/RC)Q = E/R.</li>
+          </ul>
+        </div>
+      </details>
+
+      <div class=\"small\" style=\"margin-top:12px\">Tip: Use the <b>Practice</b> tab to generate problems that match each lesson, including ODEs now!</div>
+    </div>
 
   <script>
   // === Utility: persistence ===
@@ -344,6 +372,32 @@
   window.addEventListener('keydown', (e)=>{ if(e.key.toLowerCase()==='n'){ newProblem() } });
 
   renderProgress();
+  // === Modes: Practice vs Lessons ===
+  function setMode(mode){
+    const pBtn = document.getElementById('modePractice');
+    const lBtn = document.getElementById('modeLessons');
+    const p = document.getElementById('practiceWrap');
+    const l = document.getElementById('lessonsWrap');
+    if(mode==='lessons'){
+      if(p) p.style.display='none'; if(l) l.style.display='block';
+      if(lBtn){ lBtn.classList.add('active'); lBtn.classList.remove('ghost'); }
+      if(pBtn){ pBtn.classList.remove('active'); pBtn.classList.add('ghost'); }
+      localStorage.setItem('md-mode','lessons');
+    } else {
+      if(p) p.style.display='grid'; if(l) l.style.display='none';
+      if(pBtn){ pBtn.classList.add('active'); pBtn.classList.remove('ghost'); }
+      if(lBtn){ lBtn.classList.remove('active'); lBtn.classList.add('ghost'); }
+      localStorage.setItem('md-mode','practice');
+    }
+  }
+  const _initMode = localStorage.getItem('md-mode') || 'practice';
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const pBtn = document.getElementById('modePractice');
+    const lBtn = document.getElementById('modeLessons');
+    if(pBtn) pBtn.addEventListener('click', ()=> setMode('practice'));
+    if(lBtn) lBtn.addEventListener('click', ()=> setMode('lessons'));
+    setMode(_initMode);
+  });
   </script>
 </body>
 </html>
